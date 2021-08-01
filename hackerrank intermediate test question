@@ -1,0 +1,46 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+#define ll long long
+
+int f(vector<int> v) {
+    ll n = v.size();
+    vector<ll> arr[2];
+    for(ll i=0;i < n;++i) {
+        for(ll j=0;j < 2;++j) {
+            arr[j].push_back(v[i]);
+        }
+        if(i%2) {
+            arr[1].back() *= -1;
+        } else {
+            arr[0].back() *= -1;
+        }
+    }
+    ll sum1=0,sum2=0,ans=0,min_1=0,min_2=0,max_1=0,max_2=0;
+    for(int i=n-1;i>=0;--i) {
+        ll tans=0;
+        sum1 += arr[0][i];
+        sum2 += arr[1][i];
+        if(i%2) {
+            tans = (sum1-min_1)*(sum1-min_1);
+            tans = max(tans, (sum1-max_1)*(sum1-max_1));
+        } else {
+            tans = (sum2-min_2)*(sum2-min_2);
+            tans = max(tans, (sum2-max_2)*(sum2-max_2));
+        }
+        min_1 = min(min_1,sum1);
+        min_2 = min(min_2,sum2);
+        max_1 = max(max_1,sum1);
+        max_2 = max(max_2,sum2);
+        ans = max(ans, tans);
+    }
+    return ans;
+    return 0;
+}
+
+int main() {
+    int n; cin >> n;
+    vector<int> v(n);
+    for(int i=0;i < n;++i) cin >> v[i];
+    cout << f(v) << endl;
+}
